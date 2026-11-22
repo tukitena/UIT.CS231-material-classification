@@ -1,0 +1,11 @@
+# E8 — Khảo sát kích thước codebook K cho BoW-HOG đa tỉ lệ. Chỉ dùng train + validation.
+# K* chọn theo Macro-F1 validation của E4 (K là thuộc tính codebook HOG, không phụ thuộc màu/α).
+# Hòa giữ K nhỏ hơn (lưới xếp tăng dần). Chạy xong: ghi K* vào bow.k trong _base.yaml.
+base: _base.yaml
+experiment: {name: e8_codebook_k_survey}
+survey:
+  k_grid: [256, 512, 1024]
+  variants: [bow_multi, hsv_bow_multi]
+  select_k_by: bow_multi
+representation:
+  alpha_grid: [0.5]

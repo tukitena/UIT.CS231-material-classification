@@ -1,0 +1,7 @@
+# E7 — Như E5 nhưng dùng KNN (k láng giềng, khác K của codebook). Chọn k.
+base: _base.yaml
+experiment: {name: e7_hsv_bow_multi_knn}
+representation:
+  variant: hsv_bow_multi
+  alpha_grid: [0.5]
+classifier: {type: knn}

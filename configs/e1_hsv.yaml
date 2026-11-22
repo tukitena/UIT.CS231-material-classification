@@ -1,0 +1,4 @@
+# E1 — HSV toàn ảnh + vùng tâm (c), 64 chiều. Chọn C.
+base: _base.yaml
+experiment: {name: e1_hsv}
+representation: {variant: hsv}

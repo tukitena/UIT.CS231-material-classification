@@ -1,0 +1,4 @@
+# E4 — BoW đa tỉ lệ h_BoW = L2([L2(b_full); L2(b_center)]), 2K* chiều. Chọn C.
+base: _base.yaml
+experiment: {name: e4_bow_multi}
+representation: {variant: bow_multi}

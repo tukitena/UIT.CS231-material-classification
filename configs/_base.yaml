@@ -1,0 +1,57 @@
+# Cấu hình dùng chung cho E1–E8. Mỗi config thí nghiệm khai báo `base: _base.yaml` và chỉ ghi
+# những gì khác. Schema đầy đủ: doc/config-schema.md. Đường dẫn riêng từng máy nằm trong .env.
+
+experiment:
+  name: null          # bắt buộc ghi đè; cũng là tên thư mục trong RUNS_ROOT
+  seed: 42
+
+dataset:
+  id: mcimpoi/minc-2500_split_1
+  # Commit SHA trên Hugging Face. Đổi SHA = đổi dữ liệu = phải trích xuất lại cache.
+  revision: 5ac92ad1af8ef34f9ecd8d54d60a73c0289fe0c3
+  splits: [train, validation, test]
+  expected_counts: {train: 48875, validation: 2875, test: 5750}
+  class_names: [brick, carpet, ceramic, fabric, foliage, food, glass, hair, leather, metal,
+                mirror, other, painted, paper, plastic, polishedstone, skin, sky, stone, tile,
+                wallpaper, water, wood]
+
+# Tham số trích xuất — cố định theo báo cáo, KHÔNG khảo sát. Tham gia vào cache signature.
+features:
+  views:
+    full: {resize: 128, interpolation: INTER_AREA}
+    center: {crop: half_min_side}        # s = floor(min(h, w) / 2) → 181 × 181
+  hog:
+    orientations: 9
+    pixels_per_cell: [8, 8]
+    cells_per_block: [2, 2]
+    block_norm: L2-Hys
+    dtype: float16                       # dtype lưu cache
+  hsv:
+    image_size: 128
+    bins: [16, 8, 8]                     # H, S, V; chuẩn hóa L1 từng kênh
+
+bow:
+  k: null              # K* — để trống tới khi chạy E8, sau đó ghi giá trị chọn được vào đây
+  n_samples: 200000    # descriptor lấy mẫu, chỉ từ train
+  batch_size: 8192
+  n_init: 3
+
+representation:
+  variant: hsv_bow_multi   # hsv | bow_full | bow_center | bow_multi | hsv_bow_multi
+  alpha_grid: [0.5]        # chỉ dùng với hsv_bow_multi
+
+classifier:
+  type: linear_svm         # linear_svm | knn
+  linear_svm:
+    C_grid: [0.01, 0.1, 1.0, 10.0]
+    penalty: l2
+    loss: squared_hinge
+    max_iter: 5000
+    tol: 0.0001
+  knn:
+    k_grid: [3, 5, 7, 9]
+    weights: uniform
+    metric: euclidean
+
+evaluation:
+  selection_metric: macro_f1   # chọn tham số trên validation; hòa giữ ứng viên đứng trước

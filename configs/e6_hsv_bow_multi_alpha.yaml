@@ -1,0 +1,6 @@
+# E6 — Như E5 nhưng chọn α trên validation. Thứ tự lưới quyết định khi hòa điểm. Chọn α, C.
+base: _base.yaml
+experiment: {name: e6_hsv_bow_multi_alpha}
+representation:
+  variant: hsv_bow_multi
+  alpha_grid: [0.25, 0.5, 0.75]

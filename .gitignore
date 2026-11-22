@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.py[oc]
+build/
+dist/
+*.egg-info
+.venv/
+
+# Công cụ
+.pytest_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# Đường dẫn riêng từng máy
+.env
+
+# Dữ liệu, cache đặc trưng, kết quả chạy — không đưa lên Git
+data/
+cache/
+runs/

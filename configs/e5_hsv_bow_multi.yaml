@@ -1,0 +1,6 @@
+# E5 — PHƯƠNG ÁN CHÍNH: HSV + BoW đa tỉ lệ, α = 0,5, LinearSVC. 2K* + 64 chiều. Chọn C.
+base: _base.yaml
+experiment: {name: e5_hsv_bow_multi}
+representation:
+  variant: hsv_bow_multi
+  alpha_grid: [0.5]

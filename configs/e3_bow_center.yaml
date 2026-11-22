@@ -1,0 +1,4 @@
+# E3 — BoW HOG vùng tâm 181 × 181 ở độ phân giải gốc, K* chiều. Chọn C.
+base: _base.yaml
+experiment: {name: e3_bow_center}
+representation: {variant: bow_center}

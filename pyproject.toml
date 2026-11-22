@@ -1,0 +1,54 @@
+[project]
+name = "minc-classification"
+version = "0.1.0"
+description = "Phân loại chất liệu MINC-2500 (Split 1): HSV + BoW-HOG đa tỉ lệ + LinearSVC — đồ án CS231"
+readme = "README.md"
+authors = [
+    { name = "tukitena", email = "24520896@gm.uit.edu.vn" }
+]
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "datasets>=5.2.0",
+    "matplotlib>=3.11.2",
+    "numpy>=2.5.5",
+    "opencv-python-headless>=5.1.0.95",
+    "pandas>=3.1.1",
+    "pillow>=13.0.0",
+    "python-dotenv>=1.2.4",
+    "pyyaml>=6.0.4",
+    "scikit-image>=0.26.0",
+    "scikit-learn>=1.9.1",
+    "tqdm>=4.70.1",
+]
+
+[project.scripts]
+minc = "minc_classification.cli:main"
+
+[build-system]
+requires = ["uv_build>=0.13.9,<0.14.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.2.0",
+    "ruff>=0.17.6",
+]
+notebook = [
+    "ipykernel>=7.4.0",
+]
+
+[tool.uv]
+# `uv sync` cài luôn nhóm notebook để không gỡ ipykernel khi đang mở notebook.
+default-groups = ["dev", "notebook"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra"
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "NPY"]

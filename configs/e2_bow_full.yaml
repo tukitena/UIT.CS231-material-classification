@@ -1,0 +1,4 @@
+# E2 — BoW HOG toàn ảnh 128 × 128, K* chiều. Chọn C.
+base: _base.yaml
+experiment: {name: e2_bow_full}
+representation: {variant: bow_full}
