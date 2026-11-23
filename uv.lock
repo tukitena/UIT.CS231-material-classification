@@ -526,6 +526,7 @@ source = { editable = "." }
 default-groups = ["dev", "notebook"]
 dependencies = [
     { name = "datasets" },
+    { name = "joblib" },
     { name = "matplotlib" },
     { name = "numpy" },
     { name = "opencv-python-headless" },
@@ -550,6 +551,7 @@ notebook = [
 [package.metadata]
 requires-dist = [
     { name = "datasets", specifier = ">=5.2.0" },
+    { name = "joblib", specifier = ">=1.6.0" },
     { name = "matplotlib", specifier = ">=3.11.2" },
     { name = "numpy", specifier = ">=2.5.5" },
     { name = "opencv-python-headless", specifier = ">=5.1.0.95" },

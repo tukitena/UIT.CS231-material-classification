@@ -52,6 +52,8 @@ flowchart LR
   trong cùng PR. Không dùng `pip install`.
 - Không commit `data/`, `cache/`, `runs/`, `.env`.
 
+Tiến độ chung theo dõi trong [todo.md](todo.md).
+
 ## Định nghĩa "xong" cho một module
 
 1. Không còn `todo(...)` trong module.

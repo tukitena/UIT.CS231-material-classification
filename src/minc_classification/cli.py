@@ -37,6 +37,10 @@ def main(argv: list[str] | None = None) -> None:
         "--split", nargs="+", default=["train", "validation", "test"],
         choices=["train", "validation", "test"],
     )  # fmt: skip
+    p_ex.add_argument(
+        "--jobs", type=int, default=1,
+        help="Số tiến trình song song (-1 = dùng mọi lõi CPU)",
+    )  # fmt: skip
 
     p_run = sub.add_parser("run", help="Chạy một config thí nghiệm (E1–E8)")
     p_run.add_argument("config", type=Path)
@@ -63,7 +67,9 @@ def main(argv: list[str] | None = None) -> None:
         else:
             from .pipeline import extract
 
-            extract(base, p, tuple(args.split))
+            # Không cache đặc trưng từ một bản dataset sai revision hoặc thiếu mẫu.
+            data.check_dataset(p.dataset, base["dataset"])
+            extract(base, p, tuple(args.split), n_jobs=args.jobs)
     elif args.cmd == "run":
         from .pipeline import run
 

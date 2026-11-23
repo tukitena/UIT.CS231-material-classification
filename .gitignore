@@ -15,6 +15,6 @@ dist/
 .env
 
 # Dữ liệu, cache đặc trưng, kết quả chạy — không đưa lên Git
-data/
-cache/
-runs/
+/data/
+/cache/
+/runs/

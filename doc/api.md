@@ -22,7 +22,8 @@ def download(dataset_cfg: dict, root: Path, force: bool = False) -> None
 def check_dataset(root: Path, dataset_cfg: dict) -> None          # sai → ValueError
 def split_size(root: Path, split: Split) -> int
 def load_labels(root: Path, split: Split) -> np.ndarray           # (N,) int64, 0..22
-def iter_images(root: Path, split: Split) -> Iterator[np.ndarray] # RGB uint8 (H, W, 3), theo index
+def iter_images(root: Path, split: Split, start: int = 0, stop: int | None = None) -> Iterator[np.ndarray]
+    # RGB uint8 (H, W, 3), theo index, trong đoạn [start, stop)
 ```
 
 ## `features/views.py` — A
@@ -128,6 +129,9 @@ def write_all(runs_root: Path, out_dir: Path) -> None             # CSV + Markdo
 
 ## `pipeline.py` — A
 
+Pipeline gọi hàm của B và C qua module (`hog.hog_blocks`, `classifiers.select_on_validation`...),
+nên `tests/test_pipeline_a.py` thay chúng bằng bản giả để kiểm tra riêng phần điều phối.
+
 ```python
 @dataclass
 class SplitFeatures:
@@ -138,9 +142,11 @@ class SplitFeatures:
 
 @dataclass
 class Codebook:
-    view: View; k: int; centers: np.ndarray; hash: str; fit_seconds: float
+    view: View; k: int; centers: np.ndarray; hash: str
+    fit_seconds: float   # thời gian học lúc tạo, giữ nguyên khi lấy lại từ cache
+    cached: bool
 
-def extract(cfg: dict, p: Paths, splits: tuple[Split, ...]) -> None
+def extract(cfg: dict, p: Paths, splits: tuple[Split, ...], n_jobs: int = 1, chunk: int = 256) -> None
 def load_features(cfg: dict, p: Paths, split: Split) -> SplitFeatures
 def get_codebook(cfg: dict, p: Paths, train: SplitFeatures, view: View, k: int) -> Codebook
 def encode_split(feats: SplitFeatures, codebooks: dict[View, Codebook]) -> dict[View, np.ndarray]

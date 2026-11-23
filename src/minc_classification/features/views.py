@@ -12,9 +12,8 @@ from __future__ import annotations
 
 from typing import Literal
 
+import cv2
 import numpy as np
-
-from .._todo import todo
 
 View = Literal["full", "center"]
 VIEWS: tuple[View, ...] = ("full", "center")
@@ -23,7 +22,8 @@ FULL_SIZE = 128
 
 def full_view(rgb: np.ndarray, size: int = FULL_SIZE) -> np.ndarray:
     """Resize ảnh RGB ``uint8`` về ``(size, size, 3)`` bằng ``cv2.INTER_AREA``."""
-    todo("A", "full_view")
+    _check_rgb(rgb)
+    return cv2.resize(rgb, (size, size), interpolation=cv2.INTER_AREA)
 
 
 def center_view(rgb: np.ndarray) -> np.ndarray:
@@ -31,14 +31,24 @@ def center_view(rgb: np.ndarray) -> np.ndarray:
 
     Gốc trên-trái: ``((h - s) // 2, (w - s) // 2)``. Ảnh 362 × 362 → 181 × 181.
     """
-    todo("A", "center_view")
+    _check_rgb(rgb)
+    h, w = rgb.shape[:2]
+    s = min(h, w) // 2
+    top, left = (h - s) // 2, (w - s) // 2
+    return np.ascontiguousarray(rgb[top : top + s, left : left + s])
 
 
 def to_gray(rgb: np.ndarray) -> np.ndarray:
     """RGB ``uint8`` → ảnh xám ``uint8`` bằng ``cv2.COLOR_RGB2GRAY``."""
-    todo("A", "to_gray")
+    _check_rgb(rgb)
+    return cv2.cvtColor(rgb, cv2.COLOR_RGB2GRAY)
 
 
 def extract_views(rgb: np.ndarray) -> dict[View, np.ndarray]:
     """Trả ``{"full": full_view(rgb), "center": center_view(rgb)}`` (vẫn là RGB)."""
     return {"full": full_view(rgb), "center": center_view(rgb)}
+
+
+def _check_rgb(rgb: np.ndarray) -> None:
+    if rgb.ndim != 3 or rgb.shape[2] != 3 or rgb.dtype != np.uint8:
+        raise ValueError(f"Cần ảnh RGB uint8 (H, W, 3), nhận {rgb.dtype} {rgb.shape}")
