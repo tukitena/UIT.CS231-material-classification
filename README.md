@@ -24,6 +24,7 @@ codebook K, bộ phân loại). Mọi siêu tham số được chọn theo Macro
 | [doc/api.md](doc/api.md) | Chữ ký hàm và bất biến của từng module — hợp đồng giữa các thành viên |
 | [doc/config-schema.md](doc/config-schema.md) | Schema config YAML và ví dụ |
 | [doc/team.md](doc/team.md) | Chia việc, thứ tự công việc, quy trình Git |
+| [doc/todo.md](doc/todo.md) | Checklist việc cần làm — ai xong thì tick |
 
 ## Cài đặt
 
@@ -58,11 +59,16 @@ uv run minc download
 uv run minc check
 ```
 
-**2. Trích xuất và cache** HOG + HSV hai góc nhìn cho cả ba split:
+**2. Trích xuất và cache** HOG + HSV hai góc nhìn cho cả ba split (`--jobs -1` dùng mọi lõi CPU):
 
 ```powershell
-uv run minc extract
+uv run minc extract --jobs -1
 ```
+
+Lệnh này kiểm tra dataset trước (như `minc check`), và bỏ qua split nào đã có cache đúng signature.
+
+Nếu đã tải dataset ở chỗ khác (ví dụ bản `save_to_disk` của dự án cũ), chỉ cần trỏ `DATASET_ROOT`
+trong `.env` tới thư mục chứa `dataset_dict.json` và `source.json`, không cần tải lại.
 
 **3. Khảo sát K (E8)** — chỉ dùng train + validation:
 
